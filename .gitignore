@@ -1,0 +1,8 @@
+bin
+obj
+Asteroids_Data
+*.suo
+*.user
+*.DotSettings
+Asteroids.exe
+
