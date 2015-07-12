@@ -9,8 +9,6 @@ public class ShipCollision : MonoBehaviour
     private Object _explosion;
     private Object _bigExplosion;
     private AudioClip _explosionClip;
-    private Text _gameOverText;
-    
 
     void Start()
     {
@@ -21,12 +19,7 @@ public class ShipCollision : MonoBehaviour
 
         _bigExplosion = Resources.Load("Prefabs/Big Explosion");
         
-        var gameOver = GameObject.FindGameObjectWithTag("GameOver")
-                .GetComponent<Text>();
-
         _explosionClip = Resources.Load<AudioClip>("Sounds/explosion");
-
-        _gameOverText = gameOver.GetComponent<Text>();
     }
 
 	void OnTriggerEnter(Collider collider)
@@ -62,8 +55,6 @@ public class ShipCollision : MonoBehaviour
 
             explosionAudioSource.PlayDelayed(delay);
         }
-
-        _gameOverText.enabled = true;
 
         _controller.SetGameOver();   
     }
