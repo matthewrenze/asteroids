@@ -9,17 +9,21 @@ public class GameController : MonoBehaviour
 
     public int Score = 0;
 
+    private bool _isGameStarted = false;
     private bool _isGameOver = false;
     private bool _isGameWin = false;
-    private DateTime _endTime;
+    private GameObject _startMenu;
     private Text _scoreText;
     private Text _countdownText;
     private Text _gameWinText;
     private Text _gameLoseText;
+    private DateTime _endTime;
 
     // Use this for initialization
-	void Start () 
-    {
+	void Start ()
+	{
+	    _startMenu = GameObject.FindGameObjectWithTag("StartMenu");
+
 	    _scoreText = GameObject.FindGameObjectWithTag("Score")
             .GetComponent<Text>();
 
@@ -36,6 +40,13 @@ public class GameController : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
+	    if (!_isGameStarted && Input.anyKeyDown)
+	    {
+	        _startMenu.SetActive(false);
+
+	        _isGameStarted = true;
+	    }
+
         _scoreText.text = "Score: " + Score;
 
         if (Input.GetKeyDown(KeyCode.Escape))
