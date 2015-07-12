@@ -4,18 +4,22 @@ using System.Collections;
 
 public class ShipMovement : MonoBehaviour
 {
-    public bool HasWarp = false;
     public float AccelerationRate = 0.25f;
-    public float MovementSpeed = 0.0f;
-    public float WarpSpeed = 100f;
     public float RotationSpeed = 100f;
+    public float WarpSpeed = 100f;
+    public bool HasWarp = false;
 
-	// Use this for initialization
-	void Start () {
-	
+    private GameController _controller;
+    private float MovementSpeed = 0.0f;
+    private float WarpTime = 0;
+
+    void Start () 
+    {
+        _controller = GameObject.FindGameObjectWithTag("GameController")
+
+        .GetComponent<GameController>();
 	}
 	
-	// Update is called once per frame
 	void Update () 
     {
 	    HandleMovement();
@@ -63,6 +67,10 @@ public class ShipMovement : MonoBehaviour
 
         gameObject.transform.localScale =
             new Vector3(gameObject.transform.localScale.x + 0.1f, 1, 1);
+
+        WarpTime += Time.deltaTime;
+
+        _controller.SetJumpCountdown(WarpTime);
     }
 
     private void MoveForward()
@@ -102,8 +110,14 @@ public class ShipMovement : MonoBehaviour
         var xScale = Math.Max(newXScale, 1);
 
         if (gameObject.transform.localScale.x > 1)
-            gameObject.transform.localScale =
-                new Vector3(xScale, 1, 1);
+            gameObject.transform.localScale = new Vector3(xScale, 1, 1);
+
+        if (WarpTime > 0)
+            WarpTime -= Time.deltaTime;
+        else
+            WarpTime = 0;
+
+        _controller.SetJumpCountdown(WarpTime);
     }
 
     private void CreateImpulseBubbles()

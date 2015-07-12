@@ -5,10 +5,15 @@ using System.Collections;
 
 public class GameController : MonoBehaviour
 {
+    private const float WarpTimeToWin = 3f;
+
     public int Score = 0;
+
     private bool _isGameOver = false;
+    private bool _isGameWin = false;
     private DateTime _endTime;
     private Text _scoreText;
+    private Text _countdownText;
     private Text _gameWinText;
     private Text _gameLoseText;
 
@@ -18,15 +23,14 @@ public class GameController : MonoBehaviour
 	    _scoreText = GameObject.FindGameObjectWithTag("Score")
             .GetComponent<Text>();
 
-        var gameWin = GameObject.FindGameObjectWithTag("GameWin")
+        _countdownText = GameObject.FindGameObjectWithTag("Countdown")
             .GetComponent<Text>();
 
-        _gameWinText = gameWin.GetComponent<Text>();
-
-        var gameOver = GameObject.FindGameObjectWithTag("GameLose")
+        _gameWinText = GameObject.FindGameObjectWithTag("GameWin")
             .GetComponent<Text>();
 
-        _gameLoseText = gameOver.GetComponent<Text>();
+        _gameLoseText = GameObject.FindGameObjectWithTag("GameLose")
+            .GetComponent<Text>();
     }
 	
 	// Update is called once per frame
@@ -52,11 +56,30 @@ public class GameController : MonoBehaviour
         Score += points;
     }
 
+    public void SetJumpCountdown(float warpTime)
+    {
+        if (warpTime > WarpTimeToWin)
+            SetGameWin();
+
+        var warpTimeRemaining = WarpTimeToWin - warpTime;
+
+        if (_isGameWin)
+            _countdownText.text = "Jump to lightspeed complete.";
+
+        else if (warpTime > 0f)
+            _countdownText.text = "Jump to lightspeed in " + warpTimeRemaining.ToString("N2") + " seconds.";
+
+        else 
+            _countdownText.text = string.Empty;        
+    }
+
     public void SetGameWin()
     {
         _gameWinText.enabled = true;
 
         _isGameOver = true;
+
+        _isGameWin = true;
 
         _endTime = DateTime.Now;
     }
@@ -65,7 +88,7 @@ public class GameController : MonoBehaviour
     {
         _gameLoseText.enabled = true;
 
-        _isGameOver = true;
+        _isGameOver = true;               
 
         _endTime = DateTime.Now;
     }
