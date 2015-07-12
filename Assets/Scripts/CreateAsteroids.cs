@@ -16,8 +16,8 @@ public class CreateAsteroids : MonoBehaviour {
     {
         var asteroid = Resources.Load("Prefabs/Asteroid");
 
-	    for (var i = 0; i < AsteroidCount; i++)
-	    {
+        for (var i = 0; i < AsteroidCount; i++)
+        {
             var x = Random.Range(FieldXMin, FieldXMax);
 
             var y = 0f;
@@ -28,12 +28,12 @@ public class CreateAsteroids : MonoBehaviour {
 
             var rotation = new Quaternion(0f, 0f, 0f, 0f);
 
-            var gameObject = (GameObject) Instantiate(asteroid, position, rotation);
+            var gameObject = (GameObject)Instantiate(asteroid, position, rotation);
 
             var scale = Random.Range(ScaleMin, ScaleMax);
 
             gameObject.transform.localScale = new Vector3(scale, scale, scale);
-	    }
+        }
 	}
 	
 	// Update is called once per frame

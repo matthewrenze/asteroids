@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using System.Collections;
 
@@ -6,19 +7,30 @@ public class ShipMovement : MonoBehaviour
 {
     public float AccelerationRate = 0.25f;
     public float RotationSpeed = 100f;
-    public float WarpSpeed = 100f;
+    public float WarpSpeed = 1000f;
+    public float MaxImpulseSpeed = 10f;
     public bool HasWarp = false;
-
+    
     private GameController _controller;
-    private float MovementSpeed = 0.0f;
-    private float WarpTime = 0;
-
+    private GameObject _mainAudio;
+    private AudioSource _warpAudio;
+    public float _speed = 0.0f;
+    private float _warpTime = 0;
+    private bool _isWarping = false;
+    
     void Start () 
     {
         _controller = GameObject.FindGameObjectWithTag("GameController")
+            .GetComponent<GameController>();
 
-        .GetComponent<GameController>();
-	}
+        _mainAudio = GameObject.FindGameObjectWithTag("MainAudio");
+
+        var warpSound = Resources.Load<AudioClip>("Sounds/warp");
+
+        _warpAudio = _mainAudio.AddComponent<AudioSource>();
+
+        _warpAudio.clip = warpSound;
+    }
 	
 	void Update () 
     {
@@ -45,11 +57,11 @@ public class ShipMovement : MonoBehaviour
         else
             Decelerate();
 
-        gameObject.transform.Translate(-MovementSpeed*Time.deltaTime, 0, 0);
+        gameObject.transform.Translate(-_speed*Time.deltaTime, 0, 0);
 
         if (!Input.GetKey(KeyCode.UpArrow)
             || !Input.GetKey(KeyCode.LeftControl))
-            UnWarp();
+            DeWarp();
     }
 
     private void HandleRotation()
@@ -63,34 +75,52 @@ public class ShipMovement : MonoBehaviour
 
     private void Warp()
     {
-        gameObject.transform.Translate(-WarpSpeed*Time.deltaTime, 0, 0);
+        if (_warpTime >= 3.0)
+            _speed = WarpSpeed;
+        else if (_speed < WarpSpeed)
+            _speed += AccelerationRate;
+        
+        if (_warpTime < 3.0f)
+            Stretch();
+        else
+            Shrink();
 
-        gameObject.transform.localScale =
-            new Vector3(gameObject.transform.localScale.x + 0.1f, 1, 1);
+        _warpTime += Time.deltaTime;
 
-        WarpTime += Time.deltaTime;
+        _controller.SetJumpCountdown(_warpTime);
 
-        _controller.SetJumpCountdown(WarpTime);
+        if (!_isWarping)
+        {
+            _warpAudio.Play();
+
+            _isWarping = true;
+        }
     }
 
     private void MoveForward()
     {
-        if (MovementSpeed < 10)
-            MovementSpeed += AccelerationRate;        
+        if (_speed > MaxImpulseSpeed && !_isWarping)
+            _speed -= AccelerationRate * 5;
+        else        
+            _speed += AccelerationRate;        
     }
 
     private void MoveBackward()
     {
-        if (MovementSpeed > -10)
-            MovementSpeed -= AccelerationRate;
+        if (_speed > MaxImpulseSpeed && !_isWarping)
+            _speed -= AccelerationRate * 5;
+        if (_speed > -MaxImpulseSpeed)
+            _speed -= AccelerationRate;
     }
 
     private void Decelerate()
     {
-        if (MovementSpeed > 0)
-            MovementSpeed -= AccelerationRate;
+        if (_speed > MaxImpulseSpeed)
+            _speed -= AccelerationRate*5;
+        else if (_speed > 0)
+            _speed -= AccelerationRate;
         else
-            MovementSpeed += AccelerationRate;
+            _speed += AccelerationRate;
     }
 
     private void RotateLeft()
@@ -103,7 +133,34 @@ public class ShipMovement : MonoBehaviour
         gameObject.transform.Rotate(0, RotationSpeed * Time.deltaTime, 0);
     }
 
-    private void UnWarp()
+    private void DeWarp()
+    {
+        Shrink();
+
+        if (_warpTime > 0)
+            _warpTime = 0;
+
+        _controller.SetJumpCountdown(_warpTime);
+
+        if (_isWarping)
+        {
+            _warpAudio.Stop();
+
+            _isWarping = false;
+        }
+    }
+
+    private void Stretch()
+    {
+        var newXScale = gameObject.transform.localScale.x + 0.1f;
+
+        var xScale = Math.Min(newXScale, 10);
+
+        if (gameObject.transform.localScale.x < 10)
+            gameObject.transform.localScale = new Vector3(xScale, 1, 1);
+    }
+
+    private void Shrink()
     {
         var newXScale = gameObject.transform.localScale.x - 0.5f;
 
@@ -111,20 +168,13 @@ public class ShipMovement : MonoBehaviour
 
         if (gameObject.transform.localScale.x > 1)
             gameObject.transform.localScale = new Vector3(xScale, 1, 1);
-
-        if (WarpTime > 0)
-            WarpTime -= Time.deltaTime;
-        else
-            WarpTime = 0;
-
-        _controller.SetJumpCountdown(WarpTime);
     }
 
     private void CreateImpulseBubbles()
     {
         var warpBubbles = gameObject.GetComponentInChildren<ParticleSystem>();
 
-        warpBubbles.emissionRate = Math.Abs(MovementSpeed);
+        warpBubbles.emissionRate = Math.Abs(_speed);
 
         if(HasWarp)
             warpBubbles.startColor = new Color(0, 200, 255);
