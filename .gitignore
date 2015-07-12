@@ -2,6 +2,7 @@ bin
 obj
 Asteroids_Data
 Library
+Temp
 *.suo
 *.user
 *.DotSettings
