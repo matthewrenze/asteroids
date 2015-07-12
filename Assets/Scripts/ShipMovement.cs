@@ -4,8 +4,8 @@ using System.Collections;
 
 public class ShipMovement : MonoBehaviour
 {
-    public float AccelerationRate = 0.1f;
-    public float MovementSpeed = 0.5f;
+    public float AccelerationRate = 0.25f;
+    public float MovementSpeed = 0.0f;
     public float WarpSpeed = 100f;
     public float RotationSpeed = 100f;
 

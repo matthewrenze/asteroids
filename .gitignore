@@ -1,11 +1,7 @@
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-
 bin
 obj
 Asteroids_Data
+Library
 *.suo
 *.user
 *.DotSettings
