@@ -4,6 +4,12 @@ using System.Collections;
 public class CreateAsteroids : MonoBehaviour {
 
     public int AsteroidCount = 1000;
+    public float FieldXMin = -200f;
+    public float FieldXMax = -100f;
+    public float FieldZMin = -100f;
+    public float FieldZMax = 100f;
+    public float ScaleMin = 0.75f;
+    public float ScaleMax = 3f;
 
 	// Use this for initialization
 	void Start () 
@@ -12,11 +18,11 @@ public class CreateAsteroids : MonoBehaviour {
 
 	    for (var i = 0; i < AsteroidCount; i++)
 	    {
-            var x = Random.Range(-200, -100);
+            var x = Random.Range(FieldXMin, FieldXMax);
 
-            var y = 0;
+            var y = 0f;
 
-            var z = Random.Range(-100, 100);
+            var z = Random.Range(FieldZMin, FieldZMax);
 
             var position = new Vector3(x, y, z);
 
@@ -24,7 +30,7 @@ public class CreateAsteroids : MonoBehaviour {
 
             var gameObject = (GameObject) Instantiate(asteroid, position, rotation);
 
-            var scale = Random.Range(0.75f, 3f);
+            var scale = Random.Range(ScaleMin, ScaleMax);
 
             gameObject.transform.localScale = new Vector3(scale, scale, scale);
 	    }

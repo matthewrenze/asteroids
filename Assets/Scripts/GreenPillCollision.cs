@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
-using UnityEngine.Audio;
 using System.Collections;
 
-public class PillCollision : MonoBehaviour
-{
+public class GreenPillCollision : MonoBehaviour {
+
     private Object _explosion;
+    private AudioClip _sound;
 
     void Start()
     {
         _explosion = Resources.Load("Prefabs/Explosion");
+
+        _sound = Resources.Load<AudioClip>("Sounds/shields-up");
     }
 
     void OnTriggerEnter(Collider collider)
     {
-        if (!collider.gameObject.tag.Equals("Player")) 
+        if (!collider.gameObject.tag.Equals("Player"))
             return;
 
         var pillPosition = collider.gameObject.transform.position;
@@ -22,11 +24,17 @@ public class PillCollision : MonoBehaviour
 
         Instantiate(_explosion, pillPosition, rotation);
 
-        gameObject.GetComponent<AudioSource>().Play();
+        var mainAudio = GameObject.FindGameObjectWithTag("MainAudio");
 
-        Destroy(gameObject, gameObject.GetComponent<AudioSource>().clip.length);
+        var audio = mainAudio.AddComponent<AudioSource>();
 
-        var shield = GameObject.FindGameObjectWithTag("Shield");                
+        audio.clip = _sound;
+
+        audio.Play();
+
+        Destroy(gameObject);
+
+        var shield = GameObject.FindGameObjectWithTag("Shield");
 
         shield.GetComponent<MeshRenderer>().enabled = true;
 

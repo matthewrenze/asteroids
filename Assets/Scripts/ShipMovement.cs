@@ -4,6 +4,7 @@ using System.Collections;
 
 public class ShipMovement : MonoBehaviour
 {
+    public bool HasWarp = false;
     public float AccelerationRate = 0.25f;
     public float MovementSpeed = 0.0f;
     public float WarpSpeed = 100f;
@@ -27,7 +28,8 @@ public class ShipMovement : MonoBehaviour
     private void HandleMovement()
     {
         if (Input.GetKey(KeyCode.UpArrow)
-            && Input.GetKey(KeyCode.LeftControl))
+            && Input.GetKey(KeyCode.LeftControl)
+            && HasWarp)
             Warp();
 
         else if (Input.GetKey(KeyCode.UpArrow))
@@ -109,5 +111,8 @@ public class ShipMovement : MonoBehaviour
         var warpBubbles = gameObject.GetComponentInChildren<ParticleSystem>();
 
         warpBubbles.emissionRate = Math.Abs(MovementSpeed);
+
+        if(HasWarp)
+            warpBubbles.startColor = new Color(0, 200, 255);
     }
 }

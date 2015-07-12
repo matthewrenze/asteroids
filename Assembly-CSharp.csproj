@@ -47,10 +47,11 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\AsteroidMovement.cs" />
+     <Compile Include="Assets\Scripts\BluePillCollision.cs" />
      <Compile Include="Assets\Scripts\CameraChase.cs" />
      <Compile Include="Assets\Scripts\CreateAsteroids.cs" />
      <Compile Include="Assets\Scripts\GameController.cs" />
-     <Compile Include="Assets\Scripts\PillCollision.cs" />
+     <Compile Include="Assets\Scripts\GreenPillCollision.cs" />
      <Compile Include="Assets\Scripts\RotatePill.cs" />
      <Compile Include="Assets\Scripts\Rotation.cs" />
      <Compile Include="Assets\Scripts\SelfDestruct.cs" />
