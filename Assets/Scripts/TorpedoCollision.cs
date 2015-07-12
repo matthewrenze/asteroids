@@ -22,7 +22,9 @@ public class TorpedoCollision : MonoBehaviour
         if (!collider.gameObject.tag.Equals("Asteroid")) 
             return;
 
-        var asteroidPosition = collider.gameObject.transform.position;
+        var asteroid = collider.gameObject;
+
+        var asteroidPosition = asteroid.transform.position;
 
         var rotation = Quaternion.identity;
 
@@ -36,10 +38,35 @@ public class TorpedoCollision : MonoBehaviour
 
         explosionAudio.Play();
 
-        Destroy(collider.gameObject);
+        var size = asteroid.transform.localScale.x;
+
+        if (size > 1.5f)
+            CreateChildAsteroids(asteroidPosition, size);
+
+        Destroy(asteroid);
 
         Destroy(gameObject);
 
-        _gameController.AddToScore(100);
+        _gameController.AddToScore(100);        
+    }
+
+    private void CreateChildAsteroids(Vector3 position, float size)
+    {
+        var childSize = size / 2f;
+
+        CreateChildAsteroid(position, childSize);
+
+        CreateChildAsteroid(position, childSize);
+    }
+
+    private void CreateChildAsteroid(Vector3 position, float size)
+    {
+        var asteroid = Resources.Load("Prefabs/Asteroid");
+
+        var rotation = new Quaternion(0f, 0f, 0f, 0f);
+
+        var gameObject = (GameObject)Instantiate(asteroid, position, rotation);
+
+        gameObject.transform.localScale = new Vector3(size, size, size);
     }
 }
