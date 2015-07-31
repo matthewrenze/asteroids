@@ -57,7 +57,7 @@ public class ShipMovement : MonoBehaviour
         else
             Decelerate();
 
-        gameObject.transform.Translate(-_speed*Time.deltaTime, 0, 0);
+        gameObject.transform.Translate(_speed * Time.deltaTime, 0, 0);
 
         if (!Input.GetKey(KeyCode.UpArrow)
             || !Input.GetKey(KeyCode.LeftControl))
@@ -116,7 +116,7 @@ public class ShipMovement : MonoBehaviour
     private void Decelerate()
     {
         if (_speed > MaxImpulseSpeed)
-            _speed -= AccelerationRate*5;
+            _speed -= AccelerationRate * 5;
         else if (_speed > 0)
             _speed -= AccelerationRate;
         else
@@ -125,12 +125,12 @@ public class ShipMovement : MonoBehaviour
 
     private void RotateLeft()
     {
-        gameObject.transform.Rotate(0, -RotationSpeed * Time.deltaTime, 0);
+        gameObject.transform.Rotate(0, 0, -RotationSpeed * Time.deltaTime);
     }
 
     private void RotateRight()
     {
-        gameObject.transform.Rotate(0, RotationSpeed * Time.deltaTime, 0);
+        gameObject.transform.Rotate(0, 0, RotationSpeed * Time.deltaTime);
     }
 
     private void DeWarp()

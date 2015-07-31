@@ -4,10 +4,10 @@ using System.Collections;
 public class CreateAsteroids : MonoBehaviour {
 
     public int AsteroidCount = 1000;
-    public float FieldXMin = -200f;
-    public float FieldXMax = -100f;
-    public float FieldZMin = -100f;
-    public float FieldZMax = 100f;
+    public float FieldXMin = 100f;
+    public float FieldXMax = 200f;
+    public float FieldYMin = -100f;
+    public float FieldYMax = 100f;
     public float ScaleMin = 0.75f;
     public float ScaleMax = 3f;
 
@@ -20,9 +20,9 @@ public class CreateAsteroids : MonoBehaviour {
         {
             var x = Random.Range(FieldXMin, FieldXMax);
 
-            var y = 0f;
+            var y = Random.Range(FieldYMin, FieldYMax);
 
-            var z = Random.Range(FieldZMin, FieldZMax);
+            var z = 0f;
 
             var position = new Vector3(x, y, z);
 

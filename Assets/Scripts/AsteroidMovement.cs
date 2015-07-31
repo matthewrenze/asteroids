@@ -10,9 +10,9 @@ public class AsteroidMovement : MonoBehaviour {
 	{
 	    var x = Random.Range(-3, 3);
 
-	    var y = 0;
+	    var y = Random.Range(-3, 3);
 
-	    var z = Random.Range(-3, 3);
+	    var z = 0;
 
 	    Direction = new Vector3(x, y, z);
 	}
@@ -22,9 +22,9 @@ public class AsteroidMovement : MonoBehaviour {
     {
         var x = Direction.x * Time.deltaTime;
 
-	    var y = Direction.y;
+        var y = Direction.y * Time.deltaTime;
 
-        var z = Direction.z * Time.deltaTime;
+        var z = Direction.z;
 
         var vector = new Vector3(x, y, z);
 

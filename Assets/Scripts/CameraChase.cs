@@ -30,42 +30,42 @@ public class CameraChase : MonoBehaviour
 
     private void ShowOverhead()
     {
-        var x = Player.transform.position.x + 15f;
+        var x = Player.transform.position.x - 15f;
 
-        var y = Player.transform.position.y + 15f;
+        var y = Player.transform.position.y;
 
-        var z = Player.transform.position.z;
+        var z = Player.transform.position.z + 15f;
 
         gameObject.transform.position = new Vector3(x, y, z);
 
-        var rx = -0.3f;
+        var rx = -0.7f;
 
-        var ry = 0.7f;
+        var ry = -0.7f;
 
         var rz = -0.3f;
 
-        var rw = -0.7f;
+        var rw = -0.3f;
 
         gameObject.transform.rotation = new Quaternion(rx, ry, rz, rw);
     }
 
     private void ShowChase()
     {
-        var x = Player.transform.position.x + 7.5f;
+        var x = Player.transform.position.x - 7.5f;
 
-        var y = Player.transform.position.y + 2.5f;
+        var y = Player.transform.position.y;
 
-        var z = Player.transform.position.z;
+        var z = Player.transform.position.z + 2.5f;
 
         gameObject.transform.position = new Vector3(x, y, z);
 
-        var rx = 0.0f;
+        var rx = 0.5f;
 
-        var ry = 0.7f;
+        var ry = 0.5f;
 
-        var rz = 0.0f;
+        var rz = 0.5f;
 
-        var rw = -0.7f;
+        var rw = 0.5f;
 
         gameObject.transform.rotation = new Quaternion(rx, ry, rz, rw);
     }

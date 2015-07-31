@@ -13,6 +13,6 @@ public class TorpedoMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-        gameObject.transform.Translate(-Speed * Time.deltaTime, 0, 0, Space.Self);
+        gameObject.transform.Translate(Speed * Time.deltaTime, 0, 0, Space.Self);
 	}
 }
