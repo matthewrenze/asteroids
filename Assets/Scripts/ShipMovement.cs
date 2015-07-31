@@ -152,7 +152,7 @@ public class ShipMovement : MonoBehaviour
 
     private void Stretch()
     {
-        var newXScale = gameObject.transform.localScale.x + 0.1f;
+        var newXScale = gameObject.transform.localScale.x + 0.01f;
 
         var xScale = Math.Min(newXScale, 10);
 
