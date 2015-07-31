@@ -172,11 +172,14 @@ public class ShipMovement : MonoBehaviour
 
     private void CreateImpulseBubbles()
     {
-        var warpBubbles = gameObject.GetComponentInChildren<ParticleSystem>();
+        var warpBubbles = gameObject.GetComponentsInChildren<ParticleSystem>();
 
-        warpBubbles.emissionRate = Math.Abs(_speed);
+        foreach (var warpBubble in warpBubbles)
+        {
+            warpBubble.emissionRate = Math.Abs(_speed);
 
-        if(HasWarp)
-            warpBubbles.startColor = new Color(0, 200, 255);
+            if (HasWarp)
+                warpBubble.startColor = new Color(0, 200, 255);   
+        }        
     }
 }
