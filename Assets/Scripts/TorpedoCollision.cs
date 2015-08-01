@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 public class TorpedoCollision : MonoBehaviour
 {
@@ -28,6 +31,10 @@ public class TorpedoCollision : MonoBehaviour
 
         var rotation = Quaternion.identity;
 
+        var asteroidMovement = asteroid.GetComponentInChildren<AsteroidMovement>();
+
+        var direction = asteroidMovement.Direction;
+
         Instantiate(_explosion, asteroidPosition, rotation);
 
         var camera = GameObject.FindGameObjectWithTag("MainAudio");
@@ -41,7 +48,7 @@ public class TorpedoCollision : MonoBehaviour
         var size = asteroid.transform.localScale.x;
 
         if (size > 1.5f)
-            CreateChildAsteroids(asteroidPosition, size);
+            CreateChildAsteroids(asteroidPosition, direction, size);
 
         Destroy(asteroid);
 
@@ -50,23 +57,39 @@ public class TorpedoCollision : MonoBehaviour
         _gameController.AddToScore(100);        
     }
 
-    private void CreateChildAsteroids(Vector3 position, float size)
+    private void CreateChildAsteroids(Vector3 position, Vector3 direction, float size)
     {
-        var childSize = size / 2f;
+        CreateChildAsteroid(position, direction, size);
 
-        CreateChildAsteroid(position, childSize);
-
-        CreateChildAsteroid(position, childSize);
+        CreateChildAsteroid(position, direction, size);
     }
 
-    private void CreateChildAsteroid(Vector3 position, float size)
+    private void CreateChildAsteroid(Vector3 position, Vector3 direction, float size)
     {
         var asteroid = Resources.Load("Prefabs/Asteroid");
 
         var rotation = new Quaternion(0f, 0f, 0f, 0f);
 
+        var childSize = size / 2f;
+
         var gameObject = (GameObject)Instantiate(asteroid, position, rotation);
 
-        gameObject.transform.localScale = new Vector3(size, size, size);
+        gameObject.transform.localScale = new Vector3(childSize, childSize, childSize);
+
+        var x = Math.Abs(direction.x);
+
+        var y = Math.Abs(direction.y);
+
+        var mx = Random.Range(-x, x);
+
+        var my = Random.Range(-y, y);
+
+        var mz = 0f;
+
+        var childDirection = new Vector3(mx, my, mz);
+
+        var movement = gameObject.GetComponentInChildren<AsteroidMovement>();
+
+        movement.Direction = childDirection;
     }
 }

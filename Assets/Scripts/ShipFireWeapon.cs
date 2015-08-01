@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShipFireTorpedo : MonoBehaviour
+public class ShipFireWeapon : MonoBehaviour
 {
     private Object _torpedo;
 

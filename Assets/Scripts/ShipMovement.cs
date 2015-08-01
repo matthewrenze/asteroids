@@ -34,46 +34,17 @@ public class ShipMovement : MonoBehaviour
 	
 	void Update () 
     {
-	    HandleMovement();
-
-	    HandleRotation();
+	    Move();
         
 	    CreateImpulseBubbles();
     }
 
-    private void HandleMovement()
+    private void Move()
     {
-        if (Input.GetKey(KeyCode.UpArrow)
-            && Input.GetKey(KeyCode.LeftControl)
-            && HasWarp)
-            Warp();
-
-        else if (Input.GetKey(KeyCode.UpArrow))
-            MoveForward();
-
-        else if (Input.GetKey(KeyCode.DownArrow))
-            MoveBackward();
-
-        else
-            Decelerate();
-
         gameObject.transform.Translate(_speed * Time.deltaTime, 0, 0);
-
-        if (!Input.GetKey(KeyCode.UpArrow)
-            || !Input.GetKey(KeyCode.LeftControl))
-            DeWarp();
     }
-
-    private void HandleRotation()
-    {
-        if (Input.GetKey(KeyCode.LeftArrow))
-            RotateLeft();
-
-        else if (Input.GetKey(KeyCode.RightArrow))
-            RotateRight();
-    }
-
-    private void Warp()
+    
+    public void Warp()
     {
         if (_warpTime >= 3.0)
             _speed = WarpSpeed;
@@ -97,7 +68,7 @@ public class ShipMovement : MonoBehaviour
         }
     }
 
-    private void MoveForward()
+    public void MoveForward()
     {
         if (_speed > MaxImpulseSpeed && !_isWarping)
             _speed -= AccelerationRate * 5;
@@ -105,7 +76,7 @@ public class ShipMovement : MonoBehaviour
             _speed += AccelerationRate;        
     }
 
-    private void MoveBackward()
+    public void MoveBackward()
     {
         if (_speed > MaxImpulseSpeed && !_isWarping)
             _speed -= AccelerationRate * 5;
@@ -113,7 +84,7 @@ public class ShipMovement : MonoBehaviour
             _speed -= AccelerationRate;
     }
 
-    private void Decelerate()
+    public void Decelerate()
     {
         if (_speed > MaxImpulseSpeed)
             _speed -= AccelerationRate * 5;
@@ -123,17 +94,17 @@ public class ShipMovement : MonoBehaviour
             _speed += AccelerationRate;
     }
 
-    private void RotateLeft()
+    public void RotateLeft()
     {
         gameObject.transform.Rotate(0, 0, -RotationSpeed * Time.deltaTime);
     }
 
-    private void RotateRight()
+    public void RotateRight()
     {
         gameObject.transform.Rotate(0, 0, RotationSpeed * Time.deltaTime);
     }
 
-    private void DeWarp()
+    public void DeWarp()
     {
         Shrink();
 

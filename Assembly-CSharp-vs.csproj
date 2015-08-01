@@ -58,7 +58,7 @@
      <Compile Include="Assets\Scripts\SelfDestruct.cs" />
      <Compile Include="Assets\Scripts\ShieldCollision.cs" />
      <Compile Include="Assets\Scripts\ShipCollision.cs" />
-     <Compile Include="Assets\Scripts\ShipFireTorpedo.cs" />
+     <Compile Include="Assets\Scripts\ShipFireWeapon.cs" />
      <Compile Include="Assets\Scripts\ShipMovement.cs" />
      <Compile Include="Assets\Scripts\TorpedoCollision.cs" />
      <Compile Include="Assets\Scripts\TorpedoMovement.cs" />

@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     private Text _gameWinText;
     private Text _gameLoseText;
     private DateTime _endTime;
+    private ShipMovement _shipMovement;
 
     // Use this for initialization
 	void Start ()
@@ -38,24 +39,69 @@ public class GameController : MonoBehaviour
 
         _gameLoseText = GameObject.FindGameObjectWithTag("GameLose")
             .GetComponent<Text>();
-    }
+
+	    var ship = GameObject.FindGameObjectWithTag("Player");
+
+	    _shipMovement = ship.GetComponentInChildren<ShipMovement>();
+	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-	    if (!_isGameStarted && Input.anyKeyDown)
-	    {
-	        _startMenu.SetActive(false);
+	    HandleStartGame();
 
-	        _isGameStarted = true;
-	    }
+	    HandleMovement();
 
         _scoreText.text = "Score: " + Score;
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Application.Quit();
+	    HandleExitGame();
 
-	    if (!_isGameOver)
+	    HandleResetLevel();
+    }
+
+    private void HandleStartGame()
+    {
+        if (!_isGameStarted && Input.anyKeyDown)
+        {
+            _startMenu.SetActive(false);
+
+            _isGameStarted = true;
+        }
+    }
+
+    private void HandleMovement()
+    {
+        if (_shipMovement == null)
+            return;
+
+        if (Input.GetKey(KeyCode.LeftArrow))
+            _shipMovement.RotateLeft();
+
+        else if (Input.GetKey(KeyCode.RightArrow))
+            _shipMovement.RotateRight();
+
+        if (Input.GetKey(KeyCode.UpArrow)
+            && Input.GetKey(KeyCode.LeftControl)
+            && _shipMovement.HasWarp)
+            _shipMovement.Warp();
+
+        else if (Input.GetKey(KeyCode.UpArrow))
+            _shipMovement.MoveForward();
+
+        else if (Input.GetKey(KeyCode.DownArrow))
+            _shipMovement.MoveBackward();
+
+        else
+            _shipMovement.Decelerate();
+
+        if (!Input.GetKey(KeyCode.UpArrow)
+            || !Input.GetKey(KeyCode.LeftControl))
+            _shipMovement.DeWarp();
+    }
+
+    private void HandleResetLevel()
+    {
+        if (!_isGameOver)
             return;
 
         if (DateTime.Now.Subtract(_endTime).Seconds < 2)
@@ -63,6 +109,12 @@ public class GameController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
             Application.LoadLevel("Main Scene");
+    }
+
+    private static void HandleExitGame()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
     }
 
     public void AddToScore(int points)
