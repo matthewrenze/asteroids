@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\AsteroidMovement.cs" />
      <Compile Include="Assets\Scripts\BluePillCollision.cs" />
      <Compile Include="Assets\Scripts\CameraChase.cs" />
+     <Compile Include="Assets\Scripts\CameraMode.cs" />
      <Compile Include="Assets\Scripts\CreateAsteroids.cs" />
      <Compile Include="Assets\Scripts\GameController.cs" />
      <Compile Include="Assets\Scripts\GreenPillCollision.cs" />
