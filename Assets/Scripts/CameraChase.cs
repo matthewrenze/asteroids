@@ -8,23 +8,31 @@ public class CameraChase : MonoBehaviour
     
     private GameObject Player;
 
-	// Use this for initialization
 	void Start ()
 	{
 	    Player = GameObject.FindGameObjectWithTag("Player");
 	}
-	
-	// Update is called once per frame
+
+    public void DecreaseView()
+    {
+        if (CameraMode == CameraMode.Overhead)
+            CameraMode = CameraMode.FirstPerson;
+        else
+            CameraMode --;
+    }
+
+    public void IncreaseView()
+    {
+        if (CameraMode == CameraMode.FirstPerson)
+            CameraMode = CameraMode.Overhead;
+        else
+            CameraMode ++;
+    }
+
 	void Update () 
     {
 	    if (Player == null) 
             return;
-
-	    if (Input.GetKeyDown(KeyCode.LeftShift))
-            CameraMode = (CameraMode)(((int)CameraMode + 1) % -4);
-
-        if (Input.GetKeyDown(KeyCode.RightShift))
-            CameraMode = (CameraMode)(((int)CameraMode + 1) % 4);
 
 	    if (CameraMode == CameraMode.Overhead)
 	        ShowOverhead();

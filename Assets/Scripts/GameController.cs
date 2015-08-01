@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -20,6 +21,7 @@ public class GameController : MonoBehaviour
     private DateTime _endTime;
     private ShipMovement _shipMovement;
     private ShipFireWeapon _shipFireWeapon;
+    private CameraChase _cameraChase;
 
     // Use this for initialization
 	void Start ()
@@ -46,6 +48,10 @@ public class GameController : MonoBehaviour
 	    _shipMovement = ship.GetComponentInChildren<ShipMovement>();
 
 	    _shipFireWeapon = ship.GetComponentInChildren<ShipFireWeapon>();
+
+	    var camera = GameObject.FindGameObjectWithTag("MainCamera");
+
+	    _cameraChase = camera.GetComponentInChildren<CameraChase>();
 	}
 	
 	// Update is called once per frame
@@ -56,6 +62,8 @@ public class GameController : MonoBehaviour
 	    HandleMovement();
 
 	    HandleFireWeapons();
+
+	    HandleViewChange();
 
         _scoreText.text = "Score: " + Score;
 
@@ -106,8 +114,20 @@ public class GameController : MonoBehaviour
 
     private void HandleFireWeapons()
     {
+        if (_shipFireWeapon == null)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Space))
             _shipFireWeapon.FirePrimaryWeapon();
+    }
+
+    private void HandleViewChange()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            _cameraChase.DecreaseView();
+
+        if (Input.GetKeyDown(KeyCode.RightShift))
+            _cameraChase.IncreaseView();            
     }
 
     private void HandleResetLevel()
