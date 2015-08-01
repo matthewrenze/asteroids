@@ -4,12 +4,14 @@ using System.Collections;
 public class CreateAsteroids : MonoBehaviour {
 
     public int AsteroidCount = 1000;
-    public float FieldXMin = 100f;
-    public float FieldXMax = 200f;
-    public float FieldYMin = -100f;
-    public float FieldYMax = 100f;
-    public float ScaleMin = 0.75f;
-    public float ScaleMax = 3f;
+    public float MinFieldX = 100f;
+    public float MaxFieldX = 200f;
+    public float MinFieldY = -100f;
+    public float MaxFieldY = 100f;
+    public float MinSize = 0.75f;
+    public float MaxSize = 3f;
+    public float MinSpeed = -5f;
+    public float MaxSpeed = 5f;
 
 	// Use this for initialization
 	void Start () 
@@ -18,9 +20,9 @@ public class CreateAsteroids : MonoBehaviour {
 
         for (var i = 0; i < AsteroidCount; i++)
         {
-            var x = Random.Range(FieldXMin, FieldXMax);
+            var x = Random.Range(MinFieldX, MaxFieldX);
 
-            var y = Random.Range(FieldYMin, FieldYMax);
+            var y = Random.Range(MinFieldY, MaxFieldY);
 
             var z = 0f;
 
@@ -30,9 +32,21 @@ public class CreateAsteroids : MonoBehaviour {
 
             var gameObject = (GameObject)Instantiate(asteroid, position, rotation);
 
-            var scale = Random.Range(ScaleMin, ScaleMax);
+            var scale = Random.Range(MinSize, MaxSize);
 
             gameObject.transform.localScale = new Vector3(scale, scale, scale);
+
+            var movement = gameObject.GetComponentInChildren<AsteroidMovement>();
+
+            var mx = Random.Range(MinSpeed, MaxSpeed);
+
+	        var my = Random.Range(MinSpeed, MaxSpeed);
+
+	        var mz = 0f;
+
+	        var direction = new Vector3(mx, my, mz);
+
+            movement.Direction = direction;
         }
 	}
 	

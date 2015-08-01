@@ -22,6 +22,9 @@ public class GameController : MonoBehaviour
     // Use this for initialization
 	void Start ()
 	{
+        if (Input.GetKey(KeyCode.Alpha1))
+            Application.LoadLevel("Level 1");
+
 	    _startMenu = GameObject.FindGameObjectWithTag("StartMenu");
 
 	    _scoreText = GameObject.FindGameObjectWithTag("Score")

@@ -112,15 +112,6 @@ public class CameraChase : MonoBehaviour
 
         gameObject.transform.position = new Vector3(x, y, z);
 
-        var rx = 0.5f;
-
-        var ry = 0.5f;
-
-        var rz = 0.5f;
-
-        var rw = 0.5f;
-
-        // START HERE: Fix first-person rotation
         gameObject.transform.rotation = Player.transform.rotation;
 
         gameObject.transform.Rotate(0, 90, 90);
