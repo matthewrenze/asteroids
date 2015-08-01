@@ -5,18 +5,13 @@ public class ShipFireWeapon : MonoBehaviour
 {
     private Object _torpedo;
 
-    // Use this for initialization
-	void Start () 
+    void Start () 
     {
         _torpedo = Resources.Load("Prefabs/Photon Torpedo");
 	}
 	
-	// Update is called once per frame
-	void Update ()
+	public void FirePrimaryWeapon()
 	{
-	    if (!Input.GetKeyDown(KeyCode.Space)) 
-            return;
-
 	    var position = gameObject.transform.position;
 
 	    var rotation = gameObject.transform.rotation;

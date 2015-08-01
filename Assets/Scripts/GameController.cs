@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
     private Text _gameLoseText;
     private DateTime _endTime;
     private ShipMovement _shipMovement;
+    private ShipFireWeapon _shipFireWeapon;
 
     // Use this for initialization
 	void Start ()
@@ -43,6 +44,8 @@ public class GameController : MonoBehaviour
 	    var ship = GameObject.FindGameObjectWithTag("Player");
 
 	    _shipMovement = ship.GetComponentInChildren<ShipMovement>();
+
+	    _shipFireWeapon = ship.GetComponentInChildren<ShipFireWeapon>();
 	}
 	
 	// Update is called once per frame
@@ -51,6 +54,8 @@ public class GameController : MonoBehaviour
 	    HandleStartGame();
 
 	    HandleMovement();
+
+	    HandleFireWeapons();
 
         _scoreText.text = "Score: " + Score;
 
@@ -97,6 +102,12 @@ public class GameController : MonoBehaviour
         if (!Input.GetKey(KeyCode.UpArrow)
             || !Input.GetKey(KeyCode.LeftControl))
             _shipMovement.DeWarp();
+    }
+
+    private void HandleFireWeapons()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            _shipFireWeapon.FirePrimaryWeapon();
     }
 
     private void HandleResetLevel()
