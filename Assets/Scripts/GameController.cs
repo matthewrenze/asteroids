@@ -14,10 +14,12 @@ public class GameController : MonoBehaviour
     private bool _isGameOver = false;
     private bool _isGameWin = false;
     private GameObject _startMenu;
+    private Text _copyright;
     private Text _scoreText;
     private Text _countdownText;
     private Text _gameWinText;
     private Text _gameLoseText;
+    private GameObject _credits;
     private DateTime _endTime;
     private ShipMovement _shipMovement;
     private ShipFireWeapon _shipFireWeapon;
@@ -31,6 +33,9 @@ public class GameController : MonoBehaviour
 
 	    _startMenu = GameObject.FindGameObjectWithTag("StartMenu");
 
+        _copyright = GameObject.FindGameObjectWithTag("Copyright")
+            .GetComponent<Text>();
+
 	    _scoreText = GameObject.FindGameObjectWithTag("Score")
             .GetComponent<Text>();
 
@@ -42,6 +47,10 @@ public class GameController : MonoBehaviour
 
         _gameLoseText = GameObject.FindGameObjectWithTag("GameLose")
             .GetComponent<Text>();
+
+        _credits = GameObject.FindGameObjectWithTag("Credits");
+
+        _credits.SetActive(false);
 
 	    var ship = GameObject.FindGameObjectWithTag("Player");
 
@@ -70,6 +79,8 @@ public class GameController : MonoBehaviour
 	    HandleExitGame();
 
 	    HandleResetLevel();
+
+	    HandleShowCredits();
     }
 
     private void HandleStartGame()
@@ -77,6 +88,8 @@ public class GameController : MonoBehaviour
         if (!_isGameStarted && Input.anyKeyDown)
         {
             _startMenu.SetActive(false);
+
+            _copyright.enabled = false;
 
             _isGameStarted = true;
         }
@@ -123,11 +136,11 @@ public class GameController : MonoBehaviour
 
     private void HandleViewChange()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-            _cameraChase.DecreaseView();
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+            _cameraChase.IncreaseView();
 
-        if (Input.GetKeyDown(KeyCode.RightShift))
-            _cameraChase.IncreaseView();            
+        if (Input.GetKeyDown(KeyCode.RightAlt))
+            _cameraChase.DecreaseView();            
     }
 
     private void HandleResetLevel()
@@ -148,6 +161,23 @@ public class GameController : MonoBehaviour
             Application.Quit();
     }
 
+    private void HandleShowCredits()
+    {
+        if (!_isGameOver || !_isGameWin)
+            return;
+
+        if (DateTime.Now.Subtract(_endTime).Seconds < 5)
+            return;
+
+        _gameWinText.enabled = false;
+
+        _countdownText.enabled = false;
+
+        _credits.SetActive(true);
+
+        _copyright.enabled = true;
+    }
+
     public void AddToScore(int points)
     {
         Score += points;
@@ -155,6 +185,9 @@ public class GameController : MonoBehaviour
 
     public void SetJumpCountdown(float warpTime)
     {
+        if (_isGameWin)
+            return;
+
         if (warpTime > WarpTimeToWin)
             SetGameWin();
 

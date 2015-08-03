@@ -82,9 +82,9 @@ public class CameraChase : MonoBehaviour
 
         var ry = -0.7f;
 
-        var rz = -0.3f;
+        var rz = -0.4f;
 
-        var rw = -0.3f;
+        var rw = -0.4f;
 
         gameObject.transform.rotation = new Quaternion(rx, ry, rz, rw);
     }
