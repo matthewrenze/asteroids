@@ -12,6 +12,7 @@ public class ShipMovement : MonoBehaviour
     public bool HasWarp = false;
     
     private GameController _controller;
+    private CameraChase _cameraChase;
     private GameObject _mainAudio;
     private AudioSource _warpAudio;
     public float _speed = 0.0f;
@@ -22,6 +23,10 @@ public class ShipMovement : MonoBehaviour
     {
         _controller = GameObject.FindGameObjectWithTag("GameController")
             .GetComponent<GameController>();
+
+        var camera = GameObject.FindGameObjectWithTag("MainCamera");
+
+        _cameraChase = camera.GetComponent<CameraChase>();
 
         _mainAudio = GameObject.FindGameObjectWithTag("MainAudio");
 
@@ -35,7 +40,9 @@ public class ShipMovement : MonoBehaviour
 	void Update () 
     {
 	    Move();
-        
+
+	    UpdateCamera();
+
 	    CreateImpulseBubbles();
     }
 
@@ -43,7 +50,12 @@ public class ShipMovement : MonoBehaviour
     {
         gameObject.transform.Translate(_speed * Time.deltaTime, 0, 0);
     }
-    
+
+    private void UpdateCamera()
+    {
+        _cameraChase.UpdateCamera();
+    }
+
     public void Warp()
     {
         if (_warpTime >= 3.0)

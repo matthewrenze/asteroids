@@ -29,7 +29,7 @@ public class CameraChase : MonoBehaviour
             CameraMode ++;
     }
 
-	void Update () 
+	public void UpdateCamera()
     {
 	    if (Player == null) 
             return;
